@@ -1,0 +1,12 @@
+services:
+  fluent-bit:
+    image: fluent/fluent-bit
+    container_name: fluent-bit
+    network_mode: host
+    cpus: 1
+    mem_limit: 20m
+    volumes:
+      - ./:/fluent-bit/etc/
+    command: /fluent-bit/bin/fluent-bit -c fluent-bit/etc/fluent-bit.yaml
+    restart: no
+

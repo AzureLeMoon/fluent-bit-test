@@ -1,0 +1,31 @@
+service:
+  flush: 1
+  parsers_file: parsers-custom.conf
+  log_level: info
+  storage.path: /fluent-bit/etc/
+  storage.sync:              normal
+  storage.checksum:          off
+  storage.backlog.mem_limit: 1M
+  storage.max_chunks_up: 1
+  storage.metrics: On
+  storage.delete_irrecoverable_chunks: On
+
+pipeline:
+  inputs:
+    - name: tail
+      tag: log-file
+      path: /fluent-bit/etc/test.log
+      DB: /fluent-bit/etc/test.log.db
+      Read_from_Head: true
+      DB.locking: true
+      DB.journal_mode: WAL
+      Skip_Long_Lines: On
+      buffer_chunk_size: 128k
+      Buffer_Max_Size: 512k
+      Mem_Buf_Limit: 1M
+      Parser: custom_parser
+
+  outputs:
+    - name: stdout
+      match: '*'
+     
